@@ -2,6 +2,7 @@ import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:embedding_web/theme_notifier.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,8 +45,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    final export = createJSInteropWrapper(this);
-    globalContext['_appState'] = export;
+    if (kReleaseMode) {
+      final export = createJSInteropWrapper(this);
+      globalContext['_appState'] = export;
+    }
   }
 
   @JSExport()
