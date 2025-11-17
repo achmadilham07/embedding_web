@@ -1,3 +1,6 @@
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+
 import 'package:embedding_web/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +40,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    final export = createJSInteropWrapper(this);
+    globalContext['_appState'] = export;
+  }
+
+  @JSExport()
   void onSelected(String? themeName) {
     if (themeName != null) {
       context.read<ThemeNotifier>().setTheme(themeName);

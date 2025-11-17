@@ -3,6 +3,13 @@ window.onload = function () {
     // Set default selected value to "red"
     const selectElement = document.getElementById('color-dropdown');
     selectElement.value = 'red';
+    selectElement.addEventListener('change', function (event) {
+        const selectedValue = event.target.value;
+        console.log('Selected value:', selectedValue);
+
+        // Call the Flutter method to change the theme
+        window._appState.onSelected(selectedValue);
+    });
 
     // START FLUTTER BUILD
 
