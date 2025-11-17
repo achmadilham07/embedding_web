@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
       context.read<ThemeNotifier>().setTheme(themeName);
       // Update the dropdown value with capitalized theme name
       controller.text = themeName[0].toUpperCase() + themeName.substring(1);
+      if (kReleaseMode) globalContext.callMethod('updateDropdownValue'.toJS, themeName.toJS);
     }
   }
 

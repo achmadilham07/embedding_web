@@ -11,6 +11,10 @@ window.onload = function () {
         window._appState.onSelected(selectedValue);
     });
 
+    window.updateDropdownValue = function (data) {
+        selectElement.value = data;
+    }
+
     // START FLUTTER BUILD
 
     // Get the embedding target element
