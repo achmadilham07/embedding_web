@@ -1,4 +1,8 @@
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+
 import 'package:embedding_web/theme_notifier.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,9 +41,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (kReleaseMode) {
+      final export = createJSInteropWrapper(this);
+      globalContext['_appState'] = export;
+    }
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
+  }
+
+  @JSExport()
   void onSelected(String? themeName) {
     if (themeName != null) {
       context.read<ThemeNotifier>().setTheme(themeName);
+      // Update the dropdown value with capitalized theme name
+      controller.text = themeName[0].toUpperCase() + themeName.substring(1);
+      if (kReleaseMode) globalContext.callMethod('updateDropdownValue'.toJS, themeName.toJS);
     }
   }
 
@@ -50,9 +78,15 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 8,
           children: <Widget>[
+            Text(
+              'Pilih warna untuk mengubah tema aplikasi Web dan Flutter.',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             DropdownMenu(
-              initialSelection: 'red', 
+              controller: controller,
+              initialSelection: 'red',
               dropdownMenuEntries: const [
                 DropdownMenuEntry(value: 'red', label: 'Red'),
                 DropdownMenuEntry(value: 'orange', label: 'Orange'),
