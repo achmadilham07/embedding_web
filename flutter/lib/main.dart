@@ -77,7 +77,12 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 8,
           children: <Widget>[
+            Text(
+              'Pilih warna untuk mengubah tema aplikasi Flutter.',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             DropdownMenu(
               controller: controller,
               initialSelection: 'red',
