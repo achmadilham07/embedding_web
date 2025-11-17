@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           spacing: 8,
           children: <Widget>[
             Text(
-              'Pilih warna untuk mengubah tema aplikasi Flutter.',
+              'Pilih warna untuk mengubah tema aplikasi Web dan Flutter.',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             DropdownMenu(

@@ -3,7 +3,11 @@ window.onload = function () {
     // Set default selected value to "red"
     const selectElement = document.getElementById('color-dropdown');
     selectElement.value = 'red';
+    changeDropdownColor('red');
+
     selectElement.addEventListener('change', function (event) {
+        changeDropdownColor(event.target.value);
+
         const selectedValue = event.target.value;
         console.log('Selected value:', selectedValue);
 
@@ -13,6 +17,7 @@ window.onload = function () {
 
     window.updateDropdownValue = function (data) {
         selectElement.value = data;
+        changeDropdownColor(data);
     }
 
     // START FLUTTER BUILD
@@ -41,4 +46,10 @@ window.onload = function () {
         config: config,
     });
     // END FLUTTER BUILD
+}
+
+// create function to change the color of dropdown container
+function changeDropdownColor(color) {
+    const dropdownContainerElement = document.getElementsByClassName('dropdown-container');
+    dropdownContainerElement.item(0).style.backgroundColor = color;
 }
