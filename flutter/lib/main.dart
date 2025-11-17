@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             DropdownMenu(
-              initialSelection: 'red', 
+              initialSelection: 'red',
               dropdownMenuEntries: const [
                 DropdownMenuEntry(value: 'red', label: 'Red'),
                 DropdownMenuEntry(value: 'orange', label: 'Orange'),
