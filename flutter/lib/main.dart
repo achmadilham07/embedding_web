@@ -49,12 +49,22 @@ class _HomePageState extends State<HomePage> {
       final export = createJSInteropWrapper(this);
       globalContext['_appState'] = export;
     }
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
   }
 
   @JSExport()
   void onSelected(String? themeName) {
     if (themeName != null) {
       context.read<ThemeNotifier>().setTheme(themeName);
+      // Update the dropdown value with capitalized theme name
+      controller.text = themeName[0].toUpperCase() + themeName.substring(1);
     }
   }
 
@@ -67,6 +77,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             DropdownMenu(
+              controller: controller,
               initialSelection: 'red',
               dropdownMenuEntries: const [
                 DropdownMenuEntry(value: 'red', label: 'Red'),
