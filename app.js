@@ -1,4 +1,4 @@
-window.onload = function () {
+globalThis.onload = function () {
 
     // Set default selected value to "red"
     const selectElement = document.getElementById('color-dropdown');
@@ -6,15 +6,15 @@ window.onload = function () {
     changeDropdownColor('red');
 
     selectElement.addEventListener('change', function (event) {
-        changeDropdownColor(event.target.value);
-
         const selectedValue = event.target.value;
-        console.log('Selected value:', selectedValue);
+        changeDropdownColor(selectedValue);
 
         // Call the Flutter method to change the theme
         window._appState.onSelected(selectedValue);
+        window._appState.updateDropdownText(selectedValue);
     });
 
+    // This [updateDropdownValue] function will be called from Flutter side
     window.updateDropdownValue = function (data) {
         selectElement.value = data;
         changeDropdownColor(data);
@@ -48,7 +48,6 @@ window.onload = function () {
     // END FLUTTER BUILD
 }
 
-// create function to change the color of dropdown container
 function changeDropdownColor(color) {
     const dropdownContainerElement = document.getElementsByClassName('dropdown-container');
     dropdownContainerElement.item(0).style.backgroundColor = color;

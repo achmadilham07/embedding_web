@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    /// Export this instance to JS context when in release mode
     if (kReleaseMode) {
       final export = createJSInteropWrapper(this);
       globalContext['_appState'] = export;
@@ -61,13 +62,26 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  /// this [JSExport] annotation will export this method to JS function
   @JSExport()
   void onSelected(String? themeName) {
     if (themeName != null) {
       context.read<ThemeNotifier>().setTheme(themeName);
-      // Update the dropdown value with capitalized theme name
+    }
+  }
+
+  /// this [JSExport] annotation will export this method to JS function
+  @JSExport()
+  void updateDropdownText(String? themeName) {
+    if (themeName != null) {
       controller.text = themeName[0].toUpperCase() + themeName.substring(1);
-      if (kReleaseMode) globalContext.callMethod('updateDropdownValue'.toJS, themeName.toJS);
+    }
+  }
+
+  void updateDropdownValueOnWeb(String? themeName) {
+    if (themeName != null) {
+      /// this [updateDropdownValue] is the JS function defined in app.js
+      globalContext.callMethod('updateDropdownValue'.toJS, themeName.toJS);
     }
   }
 
@@ -100,7 +114,10 @@ class _HomePageState extends State<HomePage> {
                 filled: true,
                 fillColor: Colors.white,
               ),
-              onSelected: onSelected,
+              onSelected: (String? value) {
+                onSelected(value);
+                updateDropdownValueOnWeb(value);
+              },
             ),
           ],
         ),
